@@ -41,3 +41,14 @@ ssize_t set_indexof(Set* set, Value value)
   }
   return -1;
 }
+
+void set_free(Set* set)
+{
+  for (size_t i = 0; i < set->length; i++) {
+    free_value(set->items[i]);
+  }
+  free(set->items);
+  set->items = NULL;
+  set->length = 0;
+  set->capacity = 0;
+}

@@ -14,6 +14,7 @@ typedef struct {
 bool set_insert(Set* set, Value value);
 void set_remove(Set* set, ssize_t index);
 ssize_t set_indexof(Set* set, Value value);
+void set_free(Set* set);
 
 
 #endif

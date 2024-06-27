@@ -30,19 +30,6 @@ void rpush(List* list, Value value)
   iter->next = node;
 }
 
-static void free_node(ListNode* node)
-{
-  free_value(node->value);
-  free(node);
-}
-
-static void free_node_rec(ListNode* node)
-{
-  free_value(node->value);
-  if (node->next) free_node_rec(node->next);
-  free(node);
-}
-
 ListNode* left(List* list)
 {
   return list->head;
@@ -54,6 +41,12 @@ ListNode* right(List* list)
   ListNode* iter = list->head;
   while (iter->next) iter = iter->next;
   return iter;
+}
+
+static void free_node(ListNode* node)
+{
+  free_value(node->value);
+  free(node);
 }
 
 void lpop(List* list)
@@ -78,8 +71,15 @@ void rpop(List* list)
   iter->next = NULL;
 }
 
+static void free_node_rec(ListNode* node)
+{
+  if (node->next) free_node_rec(node->next);
+  free_node(node);
+}
+
 void free_list(List* list) 
 {
   if (list->head == NULL) return;
   free_node_rec(list->head);
+  list->head = NULL;
 }

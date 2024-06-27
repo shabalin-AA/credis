@@ -3,8 +3,11 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include "str.h"
 #include "list.h"
+#include "set.h"
+#include "hashtable.h"
 
 Value value_nil()
 {
@@ -67,12 +70,17 @@ void free_value(Value value)
       free(value.ptr);
       break;
     case NIL:
+      break;
     case INTEGER:
+      break;
     case LIST:
       free_list(value.ptr);
       break;
     case HASH:
+      ht_free(value.ptr);
+      break;
     case SET:
+      set_free(value.ptr);
       break;
   }
 }
