@@ -1,6 +1,7 @@
 #include "set.h"
 
 #include <stdbool.h>
+#include <stdio.h>
 
 #define LEN 8
 #define FACTOR 2
@@ -45,10 +46,20 @@ ssize_t set_indexof(Set* set, Value value)
 void set_free(Set* set)
 {
   for (size_t i = 0; i < set->length; i++) {
-    free_value(set->items[i]);
+    value_free(set->items[i]);
   }
   free(set->items);
   set->items = NULL;
   set->length = 0;
   set->capacity = 0;
+}
+
+void set_print(Set* set)
+{
+  printf("<");
+  for (size_t i = 0; i < set->length; i++) {
+    printf("\n  ");
+    value_print(set->items[i]);
+  }
+  printf(">\n");
 }

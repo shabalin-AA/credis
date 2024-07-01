@@ -1,6 +1,7 @@
 #include "list.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "value.h"
 
 static ListNode* listNode(Value value)
@@ -43,32 +44,46 @@ ListNode* right(List* list)
   return iter;
 }
 
-static void free_node(ListNode* node)
+void free_node(ListNode* node)
 {
-  free_value(node->value);
+  value_free(node->value);
   free(node);
 }
 
-void lpop(List* list)
+Value lpop(List* list)
 {
-  if (list->head == NULL) return;
+  if (list->head == NULL) return value_nil();
   ListNode* to_pop = list->head;
   list->head = list->head->next;
-  free_node(to_pop);
+  free(to_pop);
+  return to_pop->value;
 }
 
-void rpop(List* list)
+Value rpop(List* list)
 {
-  if (list->head == NULL) return;
+  if (list->head == NULL) return value_nil();
   if (list->head->next == NULL) {
-    free_value(list->head->value);
+    Value res = list->head->value;
     free(list->head);
     list->head = NULL;
+    return res;
   }
   ListNode* iter = list->head;
   while (iter->next->next) iter = iter->next;
-  free_node(iter->next);
+  Value res = iter->next->value;
+  free(iter->next);
   iter->next = NULL;
+  return res;
+}
+
+void list_reverse(List* list)
+{
+  if (list->head == NULL) return;
+  List res = {0};
+  while (list->head) {
+    lpush(&res, lpop(list));
+  }
+  *list = res;
 }
 
 static void free_node_rec(ListNode* node)
@@ -77,9 +92,21 @@ static void free_node_rec(ListNode* node)
   free_node(node);
 }
 
-void free_list(List* list) 
+void list_free(List* list) 
 {
   if (list->head == NULL) return;
   free_node_rec(list->head);
   list->head = NULL;
+}
+
+void list_print(List* list)
+{
+  ListNode* iter = list->head;
+  printf("[");
+  while (iter) {
+    printf("\n  ");
+    value_print(iter->value);
+    iter = iter->next;
+  }
+  printf("]\n");
 }

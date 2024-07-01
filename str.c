@@ -1,10 +1,31 @@
 #include "str.h"
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
 
 Str str_new(const char* src)
 {
-  Str res = calloc(strlen(src), sizeof(char));
-  strcpy(res, src);
+  Str res = {0};
+  res.len = strlen(src);
+  res.content = calloc(res.len, sizeof(char));
+  strcpy(res.content, src);
   return res;
+}
+
+void str_free(Str* str)
+{
+  free(str->content);
+  str->content = NULL;
+  str->len = 0;
+}
+
+void str_print(Str* str)
+{
+  printf("%s\n", str->content);
+}
+
+bool str_eq(Str s1, Str s2) 
+{
+  return !strcmp(s1.content, s2.content);
 }

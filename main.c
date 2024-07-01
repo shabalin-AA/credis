@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
+
 #include "value.h"
 #include "str.h"
 #include "list.h"
 #include "set.h"
 #include "hashtable.h"
+#include "interpreter.h"
 
 #include <sys/socket.h>
 #include <sys/types.h> 
@@ -17,17 +20,23 @@
 typedef struct sockaddr_in sockaddr_in;
 typedef struct sockaddr sockaddr;
 
+#define MSG_LEN 512
+
 void* handle_client(void* arg)
 {
   int client_fd = *(int*)arg;
-  char buf[256];
+  char buf[MSG_LEN];
   while (1) {
     int len = read(client_fd, buf, sizeof(buf));
     buf[len-1] = 0;
-    printf("%s\n", buf);
-    if (strcmp(buf, "quit") == 0) {
+    if (strcmp(buf, "QUIT") == 0) {
       close(client_fd);
       break;
+    }
+    else {
+      TokenList tokens = tokenize((Str) {.content = buf, .len = len});
+      interpret(tokens);
+      DA_DEINIT(&tokens);
     }
   }
   return NULL;

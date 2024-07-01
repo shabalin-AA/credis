@@ -9,7 +9,7 @@
 
 typedef enum {
   NIL,
-  INTEGER,
+  NUMBER,
   STR,
   LIST,
   SET,
@@ -19,7 +19,8 @@ typedef enum {
 struct Value {
   ValueType type;
   union {
-    int integer;
+    double number;
+    Str str;
     void* ptr;
   };
 };
@@ -27,17 +28,18 @@ struct Value {
 typedef struct Value Value;
 
 Value value_nil();
-Value value_int(int val);
+Value value_number(double val);
 Value value_str(Str val);
-int integer_value(Value value);
+double number_value(Value value);
 Str str_value(Value value);
-void free_value(Value value);
+void value_free(Value value);
 /* 
   functions for lists, sets, etc. 
   defined in corresponding files (list.h, set.h, ...) 
   but implemented in value.c
 */
 bool value_eq(Value v1, Value v2);
+void value_print(Value value);
 
 
 #endif

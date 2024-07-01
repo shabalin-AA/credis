@@ -21,6 +21,7 @@ void ht_insert(Hashtable* table, Str key, Value value);
 void ht_remove(Hashtable* table, Str key);
 List ht_get(Hashtable* table, Str key) ;
 void ht_free(Hashtable* table);
+void ht_print(Hashtable* table);
 
 
 #endif

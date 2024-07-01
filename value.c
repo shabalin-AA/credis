@@ -13,16 +13,16 @@ Value value_nil()
 {
   Value res = (Value) {
     .type = NIL,
-    .integer = 0
+    .number = 0
   };
   return res;
 }
 
-Value value_int(int val) 
+Value value_number(double val) 
 {
   Value res = (Value) {
-    .type = INTEGER,
-    .integer = val
+    .type = NUMBER,
+    .number = val
   };
   return res;
 }
@@ -31,7 +31,7 @@ Value value_str(Str val)
 {
   Value res = (Value) {
     .type = STR,
-    .ptr = val
+    .str = val
   };
   return res;
 }
@@ -45,16 +45,16 @@ Value value_list(List* val)
   return res;
 }
 
-int integer_value(Value value)
+double number_value(Value value)
 {
-  assert((value.type == INTEGER) && "Wrong type. Expected INTEGER");
-  return value.integer;
+  assert((value.type == NUMBER) && "Wrong type. Expected NUMBER");
+  return value.number;
 }
 
 Str str_value(Value value)
 {
   assert((value.type == STR) && "Wrong type. Expected STR");
-  return (Str)value.ptr;
+  return value.str;
 }
 
 List* list_value(Value value)
@@ -63,18 +63,18 @@ List* list_value(Value value)
   return (List*)value.ptr;
 }
 
-void free_value(Value value) 
+void value_free(Value value) 
 {
   switch (value.type) {
     case STR:
-      free(value.ptr);
+      str_free(&value.str);
       break;
     case NIL:
       break;
-    case INTEGER:
+    case NUMBER:
       break;
     case LIST:
-      free_list(value.ptr);
+      list_free(value.ptr);
       break;
     case HASH:
       ht_free(value.ptr);
@@ -85,10 +85,38 @@ void free_value(Value value)
   }
 }
 
+void value_print(Value value)
+{
+  switch (value.type) {
+    case STR:
+      str_print(&value.str);
+      break;
+    case NIL:
+      printf("(nil)\n");
+      break;
+    case NUMBER:
+      printf("%lf\n", value.number);
+      break;
+    case LIST:
+      list_print(value.ptr);
+      break;
+    case HASH:
+      ht_print(value.ptr);
+      break;
+    case SET:
+      set_print(value.ptr);
+      break;
+  }
+}
+
 bool value_eq(Value v1, Value v2)
 {
   if (v1.type == v2.type) {
-    if (v1.type == INTEGER) return v1.integer == v2.integer;
+    if (v1.type == NUMBER) return v1.number == v2.number;
+    else if (v1.type == STR) {
+      return str_eq(v1.str, v2.str);
+    }
     return v1.ptr == v2.ptr;
-  } else return false;
+  } 
+  else return false;
 }

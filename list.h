@@ -19,11 +19,14 @@ void lpush(List* list, Value value);
 void rpush(List* list, Value value);
 ListNode* left(List* list);
 ListNode* right(List* list);
-void lpop(List* list);
-void rpop(List* list);
-void free_list(List* list);
+Value lpop(List* list);
+Value rpop(List* list);
+void list_reverse(List* list);
+void free_node(ListNode* node);
+void list_free(List* list);
 Value value_list(List* val);
 List* list_value(Value value);
+void list_print(List* list);
 
 
 #endif
