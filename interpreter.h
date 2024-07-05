@@ -8,6 +8,7 @@
 
 typedef enum {
   // commands
+  T_PING,
   T_SET,
   T_GET,
   T_DEL,
@@ -15,6 +16,7 @@ typedef enum {
   T_KEYS,
   T_RENAME,
   T_TYPE,
+  T_PX,
   // values
   T_STR,
   T_NUM,
@@ -28,7 +30,7 @@ typedef struct {
 DA_DEF(Token, TokenList);
 
 TokenList tokenize(Str line);
-void interpret(TokenList tokens);
+char* interpret(TokenList tokens);
 
 
 #endif

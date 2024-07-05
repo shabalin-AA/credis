@@ -99,14 +99,27 @@ void list_free(List* list)
   list->head = NULL;
 }
 
-void list_print(List* list)
+int list_print(List* list, char* dest)
 {
+  int offset = 0;
   ListNode* iter = list->head;
-  printf("[");
+  offset += sprintf(dest + offset, "[ ")-1;
   while (iter) {
-    printf("\n  ");
-    value_print(iter->value);
+    offset += sprintf(dest + offset, "\n  ");
+    offset += value_print(iter->value, dest + offset) - 1;
     iter = iter->next;
   }
-  printf("]\n");
+  offset += sprintf(dest + offset+1, "]\n");
+  return offset;
+}
+
+size_t list_length(List* list)
+{
+  size_t res = 0;
+  ListNode* iter = list->head;
+  while (iter) {
+    res++;
+    iter = iter->next;
+  }
+  return res;
 }

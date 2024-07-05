@@ -35,7 +35,8 @@ void* handle_client(void* arg)
     }
     else {
       TokenList tokens = tokenize((Str) {.content = buf, .len = len});
-      interpret(tokens);
+      char* response = interpret(tokens);
+      send(client_fd, response, strlen(response), 0);
       DA_DEINIT(&tokens);
     }
   }

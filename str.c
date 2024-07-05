@@ -20,9 +20,9 @@ void str_free(Str* str)
   str->len = 0;
 }
 
-void str_print(Str* str)
+int str_print(Str* str, char* dest)
 {
-  printf("%s\n", str->content);
+  return sprintf(dest, "%s\n", str->content);
 }
 
 bool str_eq(Str s1, Str s2) 

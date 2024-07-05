@@ -54,12 +54,14 @@ void set_free(Set* set)
   set->capacity = 0;
 }
 
-void set_print(Set* set)
+int set_print(Set* set, char* dest)
 {
-  printf("<");
+  int offset = 0;
+  offset += sprintf(dest + offset, "<");
   for (size_t i = 0; i < set->length; i++) {
-    printf("\n  ");
-    value_print(set->items[i]);
+    offset += sprintf(dest + offset, "\n  ");
+    offset += value_print(set->items[i], dest + offset) - 1;
   }
-  printf(">\n");
+  offset += sprintf(dest + offset, ">\n");
+  return offset;
 }

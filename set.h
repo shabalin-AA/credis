@@ -15,7 +15,7 @@ bool set_insert(Set* set, Value value);
 void set_remove(Set* set, ssize_t index);
 ssize_t set_indexof(Set* set, Value value);
 void set_free(Set* set);
-void set_print(Set* set);
+int set_print(Set* set, char* dest);
 
 
 #endif

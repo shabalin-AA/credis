@@ -39,7 +39,7 @@ void value_free(Value value);
   but implemented in value.c
 */
 bool value_eq(Value v1, Value v2);
-void value_print(Value value);
+int value_print(Value value, char* dest);
 
 
 #endif

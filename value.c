@@ -85,27 +85,21 @@ void value_free(Value value)
   }
 }
 
-void value_print(Value value)
+int value_print(Value value, char* dest)
 {
   switch (value.type) {
     case STR:
-      str_print(&value.str);
-      break;
+      return str_print(&value.str, dest);
     case NIL:
-      printf("(nil)\n");
-      break;
+      return sprintf(dest, "(nil)\n");
     case NUMBER:
-      printf("%lf\n", value.number);
-      break;
+      return sprintf(dest, "%lf\n", value.number);
     case LIST:
-      list_print(value.ptr);
-      break;
+      return list_print(value.ptr, dest);
     case HASH:
-      ht_print(value.ptr);
-      break;
+      return ht_print(value.ptr, dest);
     case SET:
-      set_print(value.ptr);
-      break;
+      return set_print(value.ptr, dest);
   }
 }
 

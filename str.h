@@ -12,7 +12,7 @@ typedef struct {
 
 Str str_new(const char* src);
 void str_free(Str* str);
-void str_print(Str* str);
+int str_print(Str* str, char* dest);
 bool str_eq(Str s1, Str s2);
 
 

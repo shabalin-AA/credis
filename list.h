@@ -26,7 +26,8 @@ void free_node(ListNode* node);
 void list_free(List* list);
 Value value_list(List* val);
 List* list_value(Value value);
-void list_print(List* list);
+int list_print(List* list, char* dest);
+size_t list_length(List* list);
 
 
 #endif
